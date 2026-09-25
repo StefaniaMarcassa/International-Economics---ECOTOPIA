@@ -54,8 +54,6 @@ Chapters 14–15. Boom-bust under a peg, the anatomy of a BoP crisis, OCA theory
 
 Interactive anchors are in the right-hand column; the underlying model sequence is identical to the UIM course. Full links are in the session detail above.
 
-## Assessment
-
 ## Core Readings & Resources
 
 Schmitt-Grohé, S., Uribe, M., & Woodford, M. — International Macroeconomics: A Modern Approach, Princeton University Press, 2022 (primary text; Ch.1–5, 8–15).
