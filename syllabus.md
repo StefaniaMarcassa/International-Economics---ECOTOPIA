@@ -16,7 +16,7 @@ The class combines 2nd- and 3rd-year undergraduates and does not assume a prior 
 
 ## Interactive Design
 
-With one toolkit session and six model sessions of three hours each, every block is anchored by two active-learning elements: a short video (primary-source clip or neutral explainer) to open the mechanism, and a live data exercise where students pull real euro-area series themselves rather than seeing a static chart. All links are collected per session below and again in the session table.
+With one toolkit session and five model sessions of three hours each, every block is anchored by two active-learning elements: a short video (primary-source clip or neutral explainer) to open the mechanism, and a live data exercise where students pull real euro-area series themselves rather than seeing a static chart. All links are collected per session below and again in the session table.
 
 Videos are kept short (2–10 min) and neutral — primary sources (e.g. the Draghi speech) or mechanism explainers, not polemical documentaries — and are used to motivate a model, then dropped.
 
