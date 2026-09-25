@@ -32,7 +32,7 @@ No chapter. Five tools the model sequence assumes, each with a worked numerical 
 
 ### Session 1 — Global Imbalances, CA Sustainability & the Intertemporal CA
 
-Chapters 1–3. BOP accounting, NIIP and sustainability, the two-period budget constraint and the endowment model. Framed on intra-euro imbalances, with TARGET2 balances as the visible financial-account counterpart to periphery current-account deficits. Opens with the ungraded diagnostic and a twenty-minute sketch of optimum-currency-area theory as the question the whole course answers; the formal treatment returns in Session 6.
+Chapters 1–3. BOP accounting, NIIP and sustainability, the two-period budget constraint and the endowment model. Framed on intra-euro imbalances, with TARGET2 balances as the visible financial-account counterpart to periphery current-account deficits. 
 
 ### Session 2 — CA in a Production Economy & Fiscal Policy
 
