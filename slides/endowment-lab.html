@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Endowment Economy Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* --- base reset (supplied by the artifact host when published; inlined here) --- */
+:root{color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: instrument panel — square (C1,C2) diagram beside a stacked readout column; stacks to one column under 860px with the diagram on top */
+:root{
+  --bg:#eef2f5;
+  --surface:#ffffff;
+  --surface-2:#f6f9fb;
+  --ink:#16202b;
+  --ink-soft:#5a6b7b;
+  --ink-faint:#8697a6;
+  --line:#ccd8e2;
+  --grid:#e4ecf2;
+  --endow:#3d5a80;
+  --accent:#b07d1a;
+  --surplus:#1b6b58;
+  --deficit:#a8432f;
+  --ghost:#aabbc8;
+  --shadow:0 1px 2px rgba(22,32,43,.06), 0 6px 18px rgba(22,32,43,.07);
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f151b;
+    --surface:#18212a;
+    --surface-2:#1d2832;
+    --ink:#e2e9ef;
+    --ink-soft:#93a3b2;
+    --ink-faint:#6d7f8e;
+    --line:#2d3a47;
+    --grid:#222d38;
+    --endow:#7fa3c9;
+    --accent:#e0a63f;
+    --surplus:#49bf9d;
+    --deficit:#e2866d;
+    --ghost:#51616f;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f151b;
+  --surface:#18212a;
+  --surface-2:#1d2832;
+  --ink:#e2e9ef;
+  --ink-soft:#93a3b2;
+  --ink-faint:#6d7f8e;
+  --line:#2d3a47;
+  --grid:#222d38;
+  --endow:#7fa3c9;
+  --accent:#e0a63f;
+  --surplus:#49bf9d;
+  --deficit:#e2866d;
+  --ghost:#51616f;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5}
+.wrap{
+  max-width:1180px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:22px 34px;
+}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:6px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.95rem);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--ink-soft);font-size:.9rem;margin:0}
+.rule{height:1px;background:var(--line);margin:14px 0 18px}
+
+main{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;align-items:start}
+@media (max-width:860px){main{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.plotcard{padding:12px 12px 6px}
+svg{display:block;width:100%;height:auto;max-width:100%}
+
+.eyebrow{font-size:.685rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-faint);font-weight:600;margin:0 0 9px}
+
+.scen{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.scen button{
+  font-family:var(--body);font-size:.795rem;font-weight:500;
+  padding:7px 11px;border-radius:999px;cursor:pointer;
+  background:var(--surface);color:var(--ink-soft);
+  border:1px solid var(--line);transition:background .12s,color .12s,border-color .12s}
+.scen button:hover{background:var(--surface-2);color:var(--ink)}
+.scen button[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.scen button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.ctrl{display:grid;gap:13px;margin-bottom:4px}
+.row .head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.row .lab{font-size:.84rem;font-weight:500}
+.numwrap{display:inline-flex;align-items:center;gap:3px;flex:none}
+.num{font-family:var(--mono);font-size:.93rem;font-weight:500;font-variant-numeric:tabular-nums;
+  width:4.3rem;text-align:right;padding:5px 8px;border-radius:6px;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+.num:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.pct{font-family:var(--mono);font-size:.93rem;color:var(--ink-soft)}
+input[type=range]{width:100%;accent-color:var(--endow);height:22px;margin:0}
+
+.pad{padding:15px 16px 17px}
+.readout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.cell{background:var(--surface-2);padding:10px 12px;min-width:0}
+.cell .k{font-size:.715rem;color:var(--ink-soft);letter-spacing:.01em;line-height:1.35}
+.cell .v{font-family:var(--mono);font-size:1.12rem;font-weight:500;font-variant-numeric:tabular-nums;margin-top:1px}
+.cell.wide{grid-column:1/-1}
+.pos{color:var(--surplus)}
+.neg{color:var(--deficit)}
+
+.verdict{margin-top:14px;border-radius:8px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--line)}
+.verdict .tag{display:inline-block;font-size:.69rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;padding:2px 8px;border-radius:999px;margin-bottom:8px}
+.verdict .fx{font-family:var(--mono);font-size:.875rem;font-variant-numeric:tabular-nums;line-height:1.75;word-break:break-word}
+.verdict .fx em{font-style:normal;color:var(--ink-soft)}
+.verdict p{margin:8px 0 0;font-size:.835rem;color:var(--ink-soft)}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:9px 4px 4px;font-size:.755rem;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dotm{width:9px;height:9px;border-radius:50%;flex:none}
+.linem{width:16px;height:0;border-top:2px solid;flex:none}
+
+.epi{margin-top:28px}
+.epi h2{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:0 0 5px;letter-spacing:-.005em}
+.epi .intro{color:var(--ink-soft);font-size:.86rem;margin:0 0 15px;max-width:66ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(246px,1fr));gap:14px}
+.epc{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);
+  padding:14px 15px 15px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.epc .where{font-size:.685rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;color:var(--ink-faint)}
+.epc h3{font-family:var(--display);font-size:1.02rem;font-weight:600;margin:0;line-height:1.3}
+.epc p{margin:0;font-size:.825rem;color:var(--ink-soft);line-height:1.5}
+.epc p.ask{color:var(--ink);font-weight:500}
+.epc .btns{display:flex;flex-wrap:wrap;gap:7px;padding-top:2px}
+.epc button{font-family:var(--body);font-size:.775rem;font-weight:500;padding:6px 11px;border-radius:7px;
+  cursor:pointer;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft)}
+.epc button:hover{color:var(--ink);border-color:var(--ink-faint)}
+.epc button.go{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.epc button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.reveal{border-top:1px solid var(--line);padding-top:10px}
+.reveal .real{font-size:.805rem;color:var(--ink);line-height:1.55}
+.reveal .real b{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums}
+.reveal .src{font-size:.695rem;color:var(--ink-faint);margin-top:7px;line-height:1.45}
+footer{margin-top:22px;font-size:.78rem;color:var(--ink-faint);line-height:1.6}
+footer code{font-family:var(--mono);font-size:.95em}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Endowment Economy Lab</h1>
+    <p class="sub">Two periods, log preferences, free capital mobility</p>
+  </header>
+  <div class="rule"></div>
+
+  <main>
+    <section class="card plotcard" aria-label="Consumption diagram">
+      <svg id="plot" viewBox="0 0 390 398" role="img" aria-labelledby="plottitle">
+        <title id="plottitle">Budget line, endowment point and optimal consumption path</title>
+      </svg>
+      <div class="legend">
+        <span><i class="dotm" style="background:var(--endow)"></i>A — endowment (Q₁, Q₂)</span>
+        <span><i class="dotm" style="background:var(--accent)"></i>B — optimum (C₁, C₂)</span>
+        <span><i class="linem" style="border-color:var(--ghost);border-top-style:dashed"></i>baseline</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="card pad">
+        <p class="eyebrow">Scenario</p>
+        <div class="scen" id="scen" role="group" aria-label="Preset scenarios"></div>
+
+        <p class="eyebrow">Set it yourself</p>
+        <div class="ctrl">
+          <div class="row">
+            <div class="head">
+              <label class="lab" for="q1n">Output this year, Q₁</label>
+              <span class="numwrap"><input class="num" type="number" id="q1n" min="60" max="140" step="1" value="100" inputmode="numeric"></span>
+            </div>
+            <input type="range" id="q1" min="60" max="140" step="1" value="100" aria-label="Output this year, slider">
+          </div>
+          <div class="row">
+            <div class="head">
+              <label class="lab" for="q2n">Output next year, Q₂</label>
+              <span class="numwrap"><input class="num" type="number" id="q2n" min="60" max="140" step="1" value="100" inputmode="numeric"></span>
+            </div>
+            <input type="range" id="q2" min="60" max="140" step="1" value="100" aria-label="Output next year, slider">
+          </div>
+          <div class="row">
+            <div class="head">
+              <label class="lab" for="rrn">World interest rate, r*</label>
+              <span class="numwrap"><input class="num" type="number" id="rrn" min="1" max="10" step="0.5" value="5.0" inputmode="decimal"><span class="pct">%</span></span>
+            </div>
+            <input type="range" id="rr" min="1" max="10" step="0.5" value="5" aria-label="World interest rate, slider">
+          </div>
+        </div>
+      </div>
+
+      <div class="card pad" style="margin-top:16px">
+        <p class="eyebrow">Where the economy lands</p>
+        <div class="readout">
+          <div class="cell"><div class="k">Lifetime wealth Ȳ</div><div class="v" id="ybar">—</div></div>
+          <div class="cell"><div class="k">Consumption C₁</div><div class="v" id="c1">—</div></div>
+          <div class="cell"><div class="k">Consumption C₂</div><div class="v" id="c2">—</div></div>
+          <div class="cell"><div class="k">Current account CA₁</div><div class="v" id="ca1">—</div></div>
+          <div class="cell"><div class="k">Change in C₁ from baseline</div><div class="v" id="dc1">—</div></div>
+          <div class="cell"><div class="k">Change in CA₁ from baseline</div><div class="v" id="dca1">—</div></div>
+        </div>
+
+        <div class="verdict">
+          <span class="tag" id="tag">Baseline</span>
+          <div class="fx" id="fx"></div>
+          <p id="say"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="epi">
+    <h2>Four real episodes</h2>
+    <p class="intro">Read what happened, decide which lever moves and in which direction, set the model, then check. The settings are stylised rather than fitted: what matters is the direction and the rough size, not a match.</p>
+    <div class="cards">
+
+      <article class="epc">
+        <span class="where">Spain · 1999–2007</span>
+        <h3>Joining the euro</h3>
+        <p>Convergence to northern European incomes was widely expected, and the rate Spain borrowed at fell close to Germany's.</p>
+        <p class="ask">Which lever moves, and which way?</p>
+        <div class="btns">
+          <button class="go" data-q1="100" data-q2="115" data-r="2">Set the model</button>
+          <button data-reveal="e1">What happened</button>
+        </div>
+        <div class="reveal" id="e1" hidden>
+          <div class="real">Expected future income up, interest rate down. Both widen the deficit, and they did: Spain's current account deficit reached <b>8.9%</b> of GDP in 2006 and passed <b>10%</b> in 2007.</div>
+          <div class="src">Royo, <em>After Austerity: Lessons from the Spanish Experience</em>.</div>
+        </div>
+      </article>
+
+      <article class="epc">
+        <span class="where">Greece · 2008 → 2015</span>
+        <h3>The same story in reverse</h3>
+        <p>The crisis revealed that the convergence Greece had borrowed against was not coming. Expected future income was revised sharply down.</p>
+        <p class="ask">If good news widens a deficit, what does bad news do?</p>
+        <div class="btns">
+          <button class="go" data-q1="100" data-q2="78" data-r="5">Set the model</button>
+          <button data-reveal="e2">What happened</button>
+        </div>
+        <div class="reveal" id="e2" hidden>
+          <div class="real">The deficit closed. Greece averaged <b>15.15%</b> of GDP in 2007–2008 and <b>1.58%</b> in 2013–2019 — a swing of about fourteen points. The model gets the direction right and most of the size, but it assumes Greece could still borrow freely. It could not, and that part is session 4.</div>
+          <div class="src">SUERF Policy Brief, The Greek Current Account Deficit: A Persistent Problem.</div>
+        </div>
+      </article>
+
+      <article class="epc">
+        <span class="where">European Union · 2022</span>
+        <h3>The energy price spike</h3>
+        <p>Gas and oil prices jumped after the invasion of Ukraine. Almost everyone expected the spike to pass rather than to last forever.</p>
+        <p class="ask">Temporary or permanent, and what follows?</p>
+        <div class="btns">
+          <button class="go" data-q1="94" data-q2="100" data-r="5">Set the model</button>
+          <button data-reveal="e3">What happened</button>
+        </div>
+        <div class="reveal" id="e3" hidden>
+          <div class="real">Europe financed it instead of cutting spending. The EU surplus fell from <b>€412.7bn</b> in 2021 to <b>€6.4bn</b> in 2022 — essentially zero — then recovered to a record <b>€475.8bn</b> by 2024. Textbook temporary shock, start to finish.</div>
+          <div class="src">Eurostat, Balance of payments statistics.</div>
+        </div>
+      </article>
+
+      <article class="epc">
+        <span class="where">Euro area · right now</span>
+        <h3>The one with no answer yet</h3>
+        <p>Conflict in the Middle East has cut oil and LNG flows since February. Crude rose about 65% in two months.</p>
+        <p class="ask">Set it the same way as 2022. Is it as big?</p>
+        <div class="btns">
+          <button class="go" data-q1="99" data-q2="100" data-r="5">Set the model</button>
+          <button data-reveal="e4">What happened</button>
+        </div>
+        <div class="reveal" id="e4" hidden>
+          <div class="real">The surplus is falling: <b>1.9%</b> of GDP in Q2 2025, <b>1.4%</b> in Q2 2026. That is about a fifth of the 2022 swing so far. The ECB treats it as temporary and projects a recovery to roughly <b>1.5%</b> by 2028. Whether that is right is not yet known — the next release is in January.</div>
+          <div class="src">Eurostat and ECB balance of payments, 2 October 2026; ECB Economic Bulletin 4/2026.</div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer>
+    Baseline is Q₁ = Q₂ = 100 at the interest rate you have set, with <code>B₀ = 0</code>, as in every figure in chapter 3.
+    With no inherited assets the current account equals the trade balance, <code>CA₁ = Q₁ − C₁</code>.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var BASE = 100, MAXV = 300;
+  var OX = 54, OY = 344, PW = 318, PH = 318;        // plot origin and size in SVG units
+  var S = PW / MAXV;                                  // one output unit in SVG units
+
+  var X = function(v){ return OX + v * S; };
+  var Y = function(v){ return OY - v * S; };
+  var f1 = function(v){ return (Math.round(v*10)/10).toFixed(1); };
+  var sgn = function(v){ return (v>0?"+":v<0?"−":"") + f1(Math.abs(v)); };
+
+  function solve(q1,q2,r){
+    var ybar = q1 + q2/(1+r);
+    var c1 = ybar/2, c2 = (1+r)*ybar/2;
+    return { q1:q1, q2:q2, r:r, ybar:ybar, c1:c1, c2:c2, ca1:q1-c1 };
+  }
+
+  var el = function(id){ return document.getElementById(id); };
+  var svg = el("plot"), NS = "http://www.w3.org/2000/svg";
+
+  function mk(tag, attrs, text){
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function curvePts(k){
+    var pts = [], lo = Math.max(k/MAXV, 0.5), hi = MAXV, n = 90;
+    for (var i=0;i<=n;i++){
+      var c = lo + (hi-lo)*i/n, d = k/c;
+      if (d <= MAXV && d >= 0) pts.push(X(c).toFixed(2)+","+Y(d).toFixed(2));
+    }
+    return pts;
+  }
+
+  function draw(cur, base){
+    while (svg.firstChild && svg.firstChild.nodeName !== "title") svg.removeChild(svg.firstChild);
+    while (svg.childNodes.length > 1) svg.removeChild(svg.lastChild);
+    var g = mk("g",{});
+
+    // grid + ticks
+    [0,100,200,300].forEach(function(t){
+      if (t>0){
+        g.appendChild(mk("line",{x1:X(t),y1:Y(0),x2:X(t),y2:Y(MAXV),stroke:"var(--grid)","stroke-width":1}));
+        g.appendChild(mk("line",{x1:X(0),y1:Y(t),x2:X(MAXV),y2:Y(t),stroke:"var(--grid)","stroke-width":1}));
+      }
+      g.appendChild(mk("text",{x:X(t),y:OY+17,"text-anchor":"middle",fill:"var(--ink-faint)","font-size":"10.5","font-family":"var(--mono)"},String(t)));
+      g.appendChild(mk("text",{x:OX-9,y:Y(t)+3.6,"text-anchor":"end",fill:"var(--ink-faint)","font-size":"10.5","font-family":"var(--mono)"},String(t)));
+    });
+    g.appendChild(mk("line",{x1:OX,y1:OY,x2:OX+PW,y2:OY,stroke:"var(--line)","stroke-width":1.5}));
+    g.appendChild(mk("line",{x1:OX,y1:OY,x2:OX,y2:OY-PH,stroke:"var(--line)","stroke-width":1.5}));
+    g.appendChild(mk("text",{x:OX+PW,y:OY+31,"text-anchor":"end",fill:"var(--ink-soft)","font-size":"12","font-weight":"600","font-family":"var(--body)"},"C₁  consumption this year"));
+    g.appendChild(mk("text",{x:OX-9,y:OY-PH-10,"text-anchor":"start",fill:"var(--ink-soft)","font-size":"12","font-weight":"600","font-family":"var(--body)"},"C₂  consumption next year"));
+
+    var moved = (cur.q1!==base.q1 || cur.q2!==base.q2);
+
+    // baseline ghost
+    if (moved){
+      g.appendChild(mk("line",{x1:X(0),y1:Y((1+base.r)*base.ybar),x2:X(base.ybar),y2:Y(0),
+        stroke:"var(--ghost)","stroke-width":1.6,"stroke-dasharray":"5 4"}));
+      g.appendChild(mk("circle",{cx:X(base.q1),cy:Y(base.q2),r:3.4,fill:"none",stroke:"var(--ghost)","stroke-width":1.6}));
+      g.appendChild(mk("circle",{cx:X(base.c1),cy:Y(base.c2),r:3.4,fill:"none",stroke:"var(--ghost)","stroke-width":1.6}));
+    }
+
+    // indifference curve through the optimum
+    g.appendChild(mk("polyline",{points:curvePts(cur.c1*cur.c2).join(" "),fill:"none",
+      stroke:"var(--accent)","stroke-width":1.5,opacity:".45"}));
+
+    // budget line
+    g.appendChild(mk("line",{x1:X(0),y1:Y((1+cur.r)*cur.ybar),x2:X(cur.ybar),y2:Y(0),
+      stroke:"var(--endow)","stroke-width":2.6,"stroke-linecap":"round"}));
+
+    // trade-balance band between Q1 and C1 on the horizontal axis
+    var lo = Math.min(cur.q1, cur.c1), hi = Math.max(cur.q1, cur.c1);
+    var tbCol = cur.ca1 < -0.05 ? "var(--deficit)" : cur.ca1 > 0.05 ? "var(--surplus)" : "var(--ink-faint)";
+    if (hi - lo > 0.05){
+      g.appendChild(mk("rect",{x:X(lo),y:OY-PH,width:Math.max(X(hi)-X(lo),1.2),height:PH,fill:tbCol,opacity:".11"}));
+    }
+    g.appendChild(mk("line",{x1:X(cur.q1),y1:Y(cur.q2),x2:X(cur.q1),y2:OY,
+      stroke:"var(--endow)","stroke-width":1,"stroke-dasharray":"3 3",opacity:".65"}));
+    g.appendChild(mk("line",{x1:X(cur.c1),y1:Y(cur.c2),x2:X(cur.c1),y2:OY,
+      stroke:"var(--accent)","stroke-width":1,"stroke-dasharray":"3 3",opacity:".8"}));
+
+    // points
+    g.appendChild(mk("circle",{cx:X(cur.q1),cy:Y(cur.q2),r:5.4,fill:"var(--endow)"}));
+    g.appendChild(mk("circle",{cx:X(cur.c1),cy:Y(cur.c2),r:5.4,fill:"var(--accent)"}));
+    g.appendChild(mk("text",{x:X(cur.q1)-11,y:Y(cur.q2)-11,"text-anchor":"end",fill:"var(--endow)",
+      "font-size":"13","font-weight":"600","font-family":"var(--display)"},"A"));
+    g.appendChild(mk("text",{x:X(cur.c1)+11,y:Y(cur.c2)-11,fill:"var(--accent)",
+      "font-size":"13","font-weight":"600","font-family":"var(--display)"},"B"));
+
+    // trade-balance label
+    var lbl = (cur.ca1 < -0.05 ? "deficit " : cur.ca1 > 0.05 ? "surplus " : "balanced ")
+            + (Math.abs(cur.ca1) > 0.05 ? f1(Math.abs(cur.ca1)) : "");
+    g.appendChild(mk("text",{x:X((lo+hi)/2),y:OY-11,"text-anchor":"middle",fill:tbCol,
+      "font-size":"11","font-weight":"600","font-family":"var(--body)"}, lbl.trim()));
+
+    svg.appendChild(g);
+  }
+
+  function classify(dq1,dq2){
+    if (dq1===0 && dq2===0) return "base";
+    if (dq2===0) return "temp";
+    if (dq1===0) return "antic";
+    if (dq1===dq2) return "perm";
+    return "mixed";
+  }
+
+  var COPY = {
+    base:  ["Baseline", "var(--ink-soft)", "Nothing has been shocked yet. Move a slider, or pick a scenario."],
+    temp:  ["Temporary shock", "var(--surplus)", "Output moves this year only. Half the change is consumed, half goes through the current account."],
+    perm:  ["Permanent shock", "var(--endow)", "Output moves in both years. Consumption takes almost all of it, so the current account barely responds."],
+    antic: ["Anticipated shock", "var(--deficit)", "Nothing has happened to output yet. Consumption moves today against income that has not arrived."],
+    mixed: ["Mixed shock", "var(--ink-soft)", "Both years moved, by different amounts. The general formula still applies."]
+  };
+
+  function formula(kind, dq1, dq2, r, dca){
+    var m = "<em>ΔCA₁ = </em>";
+    if (kind==="base") return "<em>No change from baseline.</em>";
+    if (kind==="temp")
+      return m + "½ × ΔQ₁ = ½ × " + sgn(dq1) + " = <strong>" + sgn(dca) + "</strong>";
+    if (kind==="perm")
+      return m + "½ × (r*/(1+r*)) × ΔQ₁ = ½ × " + (r/(1+r)).toFixed(4) + " × " + sgn(dq1) + " = <strong>" + sgn(dca) + "</strong>";
+    if (kind==="antic")
+      return m + "− 1/(2(1+r*)) × ΔQ₂ = − " + (1/(2*(1+r))).toFixed(4) + " × " + sgn(dq2) + " = <strong>" + sgn(dca) + "</strong>";
+    return m + "ΔQ₁ − ½(ΔQ₁ + ΔQ₂/(1+r*)) = <strong>" + sgn(dca) + "</strong>";
+  }
+
+  function syncNum(id, v, dec){
+    var n = el(id);
+    if (n && document.activeElement !== n) n.value = v.toFixed(dec);
+  }
+
+  function render(){
+    var q1 = +el("q1").value, q2 = +el("q2").value, r = +el("rr").value/100;
+    syncNum("q1n", q1, 0);
+    syncNum("q2n", q2, 0);
+    syncNum("rrn", +el("rr").value, 1);
+
+    var cur = solve(q1,q2,r), base = solve(BASE,BASE,r);
+    draw(cur, base);
+
+    el("ybar").textContent = f1(cur.ybar);
+    el("c1").textContent   = f1(cur.c1);
+    el("c2").textContent   = f1(cur.c2);
+
+    var caEl = el("ca1");
+    caEl.textContent = sgn(cur.ca1);
+    caEl.className = "v " + (cur.ca1 < -0.05 ? "neg" : cur.ca1 > 0.05 ? "pos" : "");
+
+    var dc1 = cur.c1 - base.c1, dca = cur.ca1 - base.ca1;
+    el("dc1").textContent = sgn(dc1);
+    var dEl = el("dca1");
+    dEl.textContent = sgn(dca);
+    dEl.className = "v " + (dca < -0.05 ? "neg" : dca > 0.05 ? "pos" : "");
+
+    var kind = classify(q1-BASE, q2-BASE), c = COPY[kind];
+    var tag = el("tag");
+    tag.textContent = c[0];
+    tag.style.color = c[1];
+    tag.style.background = "color-mix(in srgb, " + c[1] + " 14%, transparent)";
+    el("fx").innerHTML = formula(kind, q1-BASE, q2-BASE, r, dca);
+    el("say").textContent = c[2];
+
+    var presets = document.querySelectorAll("#scen button");
+    for (var i=0;i<presets.length;i++){
+      var p = presets[i];
+      p.setAttribute("aria-pressed", (+p.dataset.q1===q1 && +p.dataset.q2===q2) ? "true" : "false");
+    }
+  }
+
+  var SCEN = [
+    ["Baseline", 100, 100],
+    ["Temporary +10", 110, 100],
+    ["Permanent +10", 110, 110],
+    ["Anticipated +10", 100, 110],
+    ["Bad year −10", 90, 100]
+  ];
+  var sc = el("scen");
+  SCEN.forEach(function(s){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = s[0];
+    b.dataset.q1 = s[1];
+    b.dataset.q2 = s[2];
+    b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", function(){
+      el("q1").value = s[1];
+      el("q2").value = s[2];
+      render();
+    });
+    sc.appendChild(b);
+  });
+
+  function link(rid, nid, min, max, dec){
+    var r = el(rid), n = el(nid);
+    r.addEventListener("input", render);
+    n.addEventListener("input", function(){
+      var v = parseFloat(n.value);
+      if (!isNaN(v) && v >= min && v <= max){ r.value = v; render(); }
+    });
+    n.addEventListener("change", function(){
+      var v = parseFloat(n.value);
+      if (isNaN(v)) v = +r.value;
+      r.value = Math.min(max, Math.max(min, v));
+      n.value = (+r.value).toFixed(dec);
+      render();
+    });
+  }
+  link("q1","q1n",60,140,0);
+  link("q2","q2n",60,140,0);
+  link("rr","rrn",1,10,1);
+
+  function setLab(q1,q2,r){
+    el("q1").value = q1; el("q2").value = q2; el("rr").value = r;
+    render();
+    var t = document.querySelector(".plotcard");
+    if (t && t.scrollIntoView){
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      t.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".epc button[data-q1]"), function(b){
+    b.addEventListener("click", function(){
+      setLab(+b.dataset.q1, +b.dataset.q2, +b.dataset.r);
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".epc button[data-reveal]"), function(b){
+    b.addEventListener("click", function(){
+      var box = el(b.dataset.reveal);
+      box.hidden = !box.hidden;
+      b.textContent = box.hidden ? "What happened" : "Hide";
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
