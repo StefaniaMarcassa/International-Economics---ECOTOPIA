@@ -510,11 +510,16 @@ const PRACTICAL = [
   });
 
   /* ---- où en est-on dans le semestre ? ---- */
-  const weeks = SCHEDULE.map(w => ({ ...w, start: new Date(w.date + "T00:00") }));
+  const weeks = SCHEDULE.map(w => {
+    const d = new Date(w.date + "T00:00");
+    const wk = new Date(d);
+    wk.setDate(d.getDate() - ((d.getDay() + 6) % 7));   // lundi de la semaine de la séance
+    return { ...w, start: d, weekStart: wk };
+  });
   let currentIndex = -1;
   weeks.forEach((w, i) => {
-    const next = weeks[i + 1] ? weeks[i + 1].start : new Date(w.start.getTime() + 7 * DAY);
-    if (now >= w.start && now < next) currentIndex = i;
+    const next = weeks[i + 1] ? weeks[i + 1].weekStart : new Date(w.weekStart.getTime() + 7 * DAY);
+    if (now >= w.weekStart && now < next) currentIndex = i;
   });
 
   /* ---- calendrier ---- */
