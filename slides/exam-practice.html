@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam Practice Set</title>
+<meta name="description" content="Practice questions with full worked solutions for the International Economics final exam: accounting, the external position, the intertemporal model and the three shocks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#eef2f5; --surface:#ffffff; --surface-2:#f6f9fb; --surface-3:#eaf0f6;
+  --ink:#16202b; --ink-soft:#5a6b7b; --ink-faint:#8697a6;
+  --line:#ccd8e2; --line-soft:#e0e8ef;
+  --endow:#3d5a80; --accent:#b07d1a; --accent-wash:#fdf7e8;
+  --surplus:#1b6b58; --deficit:#a8432f;
+  --display:"Spectral",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --key-ink:#ffffff;
+  --maxw:62rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#11171d; --surface:#18212a; --surface-2:#1d2832; --surface-3:#243039;
+    --ink:#e6edf3; --ink-soft:#a4b4c2; --ink-faint:#7b8c9b;
+    --line:#2e3d4a; --line-soft:#263340;
+    --endow:#5b84b1; --accent:#d9a94a; --accent-wash:#2a2316;
+    --surplus:#5bb79c; --deficit:#e08268;
+    --key-ink:#eef4fa;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#11171d; --surface:#18212a; --surface-2:#1d2832; --surface-3:#243039;
+  --ink:#e6edf3; --ink-soft:#a4b4c2; --ink-faint:#7b8c9b;
+  --line:#2e3d4a; --line-soft:#263340;
+  --endow:#5b84b1; --accent:#d9a94a; --accent-wash:#2a2316;
+  --surplus:#5bb79c; --deficit:#e08268;
+  --key-ink:#eef4fa;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:5.5rem}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+
+/* ---------- header ---------- */
+header.top{
+  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:2.5rem 0 1.75rem;
+}
+h1{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(1.75rem,1.2rem+2.4vw,2.75rem);
+  letter-spacing:-0.02em;line-height:1.1;margin:0;
+}
+.sub{color:var(--ink-soft);margin:.6rem 0 0;max-width:60ch}
+.meta{
+  display:flex;flex-wrap:wrap;gap:.4rem 1.75rem;margin:1.4rem 0 0;padding:0;
+  list-style:none;font-family:var(--mono);font-size:.76rem;color:var(--ink-soft);
+}
+.meta b{
+  display:block;font-weight:500;font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:.15rem;
+}
+
+/* ---------- sticky nav ---------- */
+nav.jump{
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.jump-inner{
+  max-width:var(--maxw);margin:0 auto;padding:.55rem 16px;
+  display:flex;align-items:center;gap:.4rem;overflow-x:auto;
+  scrollbar-width:none;
+}
+.jump-inner::-webkit-scrollbar{display:none}
+.jump a{
+  flex:none;font-family:var(--mono);font-size:.72rem;text-decoration:none;
+  color:var(--ink-soft);padding:.3rem .6rem;border:1px solid var(--line);
+  border-radius:2px;white-space:nowrap;transition:background .14s,color .14s,border-color .14s;
+}
+.jump a:hover{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.spacer{flex:1 1 auto;min-width:.5rem}
+.prog{
+  flex:none;font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);
+  display:flex;align-items:center;gap:.5rem;
+}
+.bar{width:66px;height:4px;background:var(--line-soft);border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--surplus);transition:width .25s}
+button.theme{
+  flex:none;font-family:var(--mono);font-size:.72rem;cursor:pointer;
+  color:var(--ink-soft);background:none;padding:.3rem .55rem;
+  border:1px solid var(--line);border-radius:2px;
+}
+button.theme:hover{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+
+/* ---------- sections ---------- */
+section{padding:3rem 0 1rem}
+section+section{border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem}
+.sec-tag{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--accent);
+}
+h2{
+  font-family:var(--display);font-weight:600;font-size:1.6rem;
+  letter-spacing:-0.015em;margin:0;
+}
+.lede{color:var(--ink-soft);max-width:68ch;margin:.5rem 0 1.75rem}
+
+/* ---------- question cards ---------- */
+.q{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:3px;margin-bottom:1rem;overflow:hidden;
+}
+.q.done{border-color:var(--surplus)}
+.q-top{display:flex;gap:1rem;padding:1.1rem 1.25rem .9rem}
+.q-id{
+  flex:none;font-family:var(--mono);font-size:.78rem;font-weight:500;
+  color:var(--accent);padding-top:.12rem;min-width:2.4rem;
+}
+.q-body{flex:1;min-width:0}
+.q-body p{margin:0 0 .55rem}
+.q-body p:last-child{margin-bottom:0}
+.q-body ol{margin:.5rem 0 0;padding-left:1.3rem}
+.q-body ol li{margin-bottom:.3rem}
+.star{
+  display:inline-block;font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent);background:var(--accent-wash);
+  border:1px solid var(--accent);border-radius:2px;padding:.1rem .4rem;
+  margin-left:.5rem;vertical-align:.08em;
+}
+.q-acts{
+  display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;
+  padding:0 1.25rem 1.1rem;
+}
+.q-acts button{
+  font-family:var(--mono);font-size:.73rem;cursor:pointer;
+  padding:.35rem .75rem;border-radius:2px;border:1px solid var(--line);
+  background:var(--surface-2);color:var(--ink);
+  transition:background .14s,border-color .14s,color .14s;
+}
+.q-acts button:hover{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.q-acts button.mark[aria-pressed="true"]{
+  background:var(--surplus);border-color:var(--surplus);color:#fff;
+}
+.sol{
+  display:none;border-top:1px solid var(--line-soft);
+  background:var(--surface-2);padding:1.1rem 1.25rem;
+}
+.sol.open{display:block}
+.sol h4{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 .7rem;font-weight:500;
+}
+.sol p{margin:0 0 .6rem}
+.sol p:last-child{margin-bottom:0}
+.sol ol{margin:.4rem 0 .7rem;padding-left:1.3rem}
+.sol li{margin-bottom:.28rem}
+
+/* working strip */
+.work{
+  margin:.7rem 0;border:1px solid var(--line-soft);border-radius:2px;overflow:hidden;
+}
+.work div{
+  display:flex;gap:1rem;padding:.42rem .7rem;font-size:.9rem;
+  border-bottom:1px solid var(--line-soft);
+}
+.work div:last-child{border-bottom:0}
+.work div:nth-child(odd){background:var(--surface-3)}
+.work span{flex:1;color:var(--ink-soft);min-width:0}
+.work code{
+  flex:none;font-family:var(--mono);font-size:.84rem;color:var(--endow);
+  font-weight:500;text-align:right;
+}
+.key{
+  background:var(--endow);color:var(--key-ink);border-radius:2px;
+  padding:.7rem .9rem;margin:.75rem 0 0;font-size:.93rem;
+}
+.note{
+  border-left:2px solid var(--accent);background:var(--accent-wash);
+  padding:.6rem .85rem;margin:.75rem 0 0;font-size:.9rem;color:var(--ink);
+}
+.trap{border-left-color:var(--deficit);background:color-mix(in srgb,var(--deficit) 8%,transparent)}
+m{font-family:var(--mono);font-size:.93em;font-style:normal;white-space:nowrap}
+
+/* ---------- mock paper ---------- */
+.mock-bar{
+  position:sticky;top:3rem;z-index:15;
+  display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:.8rem 1rem;margin-bottom:1.5rem;
+}
+.clock{
+  font-family:var(--mono);font-size:1.6rem;font-weight:500;
+  color:var(--endow);letter-spacing:.02em;min-width:5.2rem;
+}
+.clock.low{color:var(--deficit)}
+.mock-bar button{
+  font-family:var(--mono);font-size:.76rem;cursor:pointer;
+  padding:.42rem .9rem;border-radius:2px;border:1px solid var(--line);
+  background:var(--surface-2);color:var(--ink);
+}
+.mock-bar button:hover{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.mock-hint{font-size:.84rem;color:var(--ink-soft);flex:1 1 14rem;min-width:0}
+.marks{
+  float:right;font-family:var(--mono);font-size:.72rem;color:var(--accent);
+  margin-left:1rem;
+}
+
+footer{
+  border-top:1px solid var(--line);margin-top:2rem;padding:2rem 0 3rem;
+  font-family:var(--mono);font-size:.74rem;color:var(--ink-faint);
+}
+footer p{margin:0 0 .4rem}
+
+@media (max-width:34rem){
+  .q-top{flex-direction:column;gap:.35rem}
+  .q-id{min-width:0}
+  .work div{flex-direction:column;gap:.15rem}
+  .work code{text-align:left}
+  .mock-bar{top:0}
+}
+@media print{
+  nav.jump,.q-acts,.mock-bar,button{display:none!important}
+  .sol{display:block!important;border-top:1px solid #ccc}
+  body{background:#fff;font-size:11pt}
+  .q{break-inside:avoid;border:1px solid #ccc}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>Exam Practice Set</h1>
+    <p class="sub">Twenty-eight questions with full worked solutions, plus the mock paper and its mark scheme. Everything here is in scope for 27 November. Write an answer before you reveal one.</p>
+    <ul class="meta">
+      <li><b>Course</b>International Economics · ECOTOPIA</li>
+      <li><b>Exam</b>Friday 27 November · 1 hour</li>
+      <li><b>Scope</b>Session 0 toolkit · Chapters 1–3</li>
+      <li><b>Route</b>Graphical always sufficient · ★ = bonus only</li>
+    </ul>
+  </div>
+</header>
+
+<nav class="jump">
+  <div class="jump-inner">
+    <a href="#a">A · Accounting</a>
+    <a href="#b">B · Stocks &amp; flows</a>
+    <a href="#c">C · The model</a>
+    <a href="#d">D · Shocks</a>
+    <a href="#e">E · Mock paper</a>
+    <span class="spacer"></span>
+    <span class="prog"><span id="pcount">0/28</span><span class="bar"><i id="pbar"></i></span></span>
+    <button class="theme" id="theme" type="button">Dark</button>
+  </div>
+</nav>
+
+<main class="wrap" id="main"></main>
+
+<footer>
+  <div class="wrap">
+    <p>International Economics · ECOTOPIA · CY Cergy Paris Université</p>
+    <p>Model and notation follow Schmitt-Grohé, Uribe &amp; Woodford, <i>International Macroeconomics: A Modern Approach</i>, Chapter 3.</p>
+    <p>Your ticked questions are remembered in this browser only. Print this page to get every solution on paper.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------------
+   Every numerical answer below was checked against the formulas with
+   exact fractions before publication, including the period-2 budget
+   constraint C2 + B2 - B1 = r1*B1 + Q2 with B2 = 0.
+   ------------------------------------------------------------------ */
+
+var W = function (rows) {
+  return '<div class="work">' + rows.map(function (r) {
+    return '<div><span>' + r[0] + '</span><code>' + r[1] + '</code></div>';
+  }).join('') + '</div>';
+};
+
+var SECTIONS = [
+{ id:"a", tag:"Section A", title:"The accounting identities",
+  lede:"Tool 1 and Chapter 1. These are the cheapest marks on the paper: there is no model here, only arithmetic and one distinction that catches people out.",
+  qs:[
+  { id:"A1",
+    q:"<p>A country reports, in billions of euro: output <m>Y = 200</m>, consumption <m>C = 120</m>, investment <m>I = 45</m>, government spending <m>G = 40</m>. There is no net income from abroad.</p><ol><li>Find absorption and net exports.</li><li>Find national saving, and show that <m>CA = S − I</m>.</li></ol>",
+    sol:"<p>Absorption is everything domestic residents spend:</p>" +
+        W([["A = C + I + G = 120 + 45 + 40","205"],
+           ["NX = Y − A = 200 − 205","−5"],
+           ["S = Y − C − G = 200 − 120 − 40","40"],
+           ["S − I = 40 − 45","−5"]]) +
+        "<p>Both routes give <m>−5</m>, and with no income from abroad <m>CA = NX = −5</m>.</p>" +
+        "<div class='key'>The two routes must agree. If yours do not, you have made an arithmetic slip — not a discovery.</div>" },
+  { id:"A2",
+    q:"<p>The same country, the same year. You now learn it also pays <m>8</m> of net investment income to foreigners, on debt accumulated in the past.</p><ol><li>What happens to the trade balance?</li><li>What is the current account?</li><li>What is national saving now, and does <m>CA = S − I</m> still hold?</li></ol>",
+    sol:"<p>The trade balance does not move at all. It records goods and services, and no goods changed hands — the payment is a return on an asset.</p>" +
+        W([["TB = NX, unchanged","−5"],
+           ["CA = TB + net income = −5 − 8","−13"],
+           ["GNI = Y + net income = 200 − 8","192"],
+           ["S = GNI − C − G = 192 − 120 − 40","32"],
+           ["S − I = 32 − 45","−13 ✓"]]) +
+        "<p>National saving falls from 40 to 32 even though nothing about the country's behaviour changed, because saving is measured out of national income, and national income fell by the interest payment.</p>" +
+        "<div class='note trap'><b>The classic lost mark.</b> Trade balance and current account are the same number only when there is no income from abroad and no transfers. As soon as a country has a past position, they differ — by exactly what it earns or pays on that position.</div>" },
+  { id:"A3",
+    q:"<p>A different country: <m>Y = 150</m>, <m>C = 85</m>, <m>I = 30</m>, <m>G = 25</m>, and it <em>receives</em> 6 of net investment income from abroad.</p><p>Find net exports, the current account and national saving, and verify the identity.</p>",
+    sol:W([["A = 85 + 30 + 25","140"],
+           ["NX = 150 − 140","+10"],
+           ["CA = 10 + 6","+16"],
+           ["GNI = 150 + 6","156"],
+           ["S = 156 − 85 − 25","46"],
+           ["S − I = 46 − 30","+16 ✓"]]) +
+        "<p>This country is a net creditor: it owns more abroad than it owes, so the income term adds to the current account rather than subtracting from it. Its current account surplus is larger than its trade surplus.</p>" },
+  { id:"A4",
+    q:"<p>A country runs a <strong>trade surplus</strong> and a <strong>current-account deficit</strong> in the same year. What must be true about it? Answer in two sentences.</p>",
+    sol:"<p>Its net income from abroad (together with net transfers) must be negative, and larger in magnitude than the trade surplus. That is the signature of a large net external debtor: it sells more goods than it buys, but the interest and dividends it pays out on past borrowing more than swallow the difference.</p>" +
+        "<div class='key'>CA = TB + net income + net transfers. If CA &lt; 0 &lt; TB, the terms after TB must sum to something more negative than TB is positive.</div>" },
+  { id:"A5",
+    q:"<p>Starting from <m>CA = S − I</m>: investment rises by 10 and national saving is unchanged. What happens to the current account, and by how much?</p><p>Does this mean the country has done something wrong?</p>",
+    sol:"<p>The current account falls by exactly 10. The identity is an equality, so a change on one side is matched one-for-one on the other.</p>" +
+        "<p>It means nothing about right or wrong. A country investing more than it saves must be importing the difference in real resources, and the counterpart is borrowing from abroad. That is what a convergence boom looks like, and also what a badly judged construction bubble looks like. The identity cannot tell them apart — only the model, and the data, can.</p>" +
+        "<div class='note'>This is the habit the course is trying to build: an identity tells you what <em>must</em> be true, never what is <em>good</em>.</div>" },
+  { id:"A6",
+    q:"<p>A country's absorption exceeds its output. What is the sign of net exports? Explain in one sentence, without using any algebra.</p>",
+    sol:"<p>Negative.</p><p>If residents used more goods than the country produced, the extra goods had to come from somewhere, and the only place they can come from is abroad — so imports exceeded exports.</p>" },
+  { id:"A7",
+    q:"<p>Why is <m>CA = S − I</m> an <strong>identity</strong> rather than a theory? What would have to be true for it to fail?</p>",
+    sol:"<p>Because it is nothing more than <m>Y = C + I + G + NX</m> rearranged, using the definition <m>S ≡ Y − C − G</m>. No assumption about behaviour, preferences, policy or expectations goes into it, so there is nothing in it that could turn out to be false.</p>" +
+        "<p>It can only fail through measurement error — mis-recorded trade, unrecorded income flows, or the statistical discrepancy that appears in real balance-of-payments data. It cannot fail because a country behaved unexpectedly.</p>" +
+        "<div class='key'>Identities constrain. Models explain. Knowing which one you are holding is most of the skill.</div>" }
+]},
+
+{ id:"b", tag:"Section B", title:"Stocks, flows and the external position",
+  lede:"Tool 2 and Chapter 2. One relation, one sign trap, and the distinction that most confused public arguments about European debt turn on.",
+  qs:[
+  { id:"B1",
+    q:"<p>A country begins the year with a net international investment position of <m>−200</m>. It runs a current-account deficit of <m>25</m>. There are no valuation changes.</p><p>What is its position at the end of the year?</p>",
+    sol:W([["NIIP₁ = NIIP₀ + CA₁ + valuation","−200 − 25 + 0"],
+           ["","−225"]]) +
+        "<p>A warm-up, but note what the two numbers are: <m>−200</m> and <m>−225</m> are stocks, with a date. <m>−25</m> is a flow, with a <em>per year</em>.</p>" },
+  { id:"B2",
+    q:"<p>Same opening position of <m>−200</m> and same deficit of <m>25</m>. But this year the country's foreign assets gain <m>14</m> in value, and foreign holdings of its domestic assets gain <m>9</m>.</p><p>Find the net valuation change and the closing position.</p>",
+    sol:W([["Gain on what it owns abroad","+14"],
+           ["Gain on what foreigners own of it","−9"],
+           ["Net valuation change","+5"],
+           ["NIIP₁ = −200 − 25 + 5","−220"]]) +
+        "<div class='note trap'><b>The sign trap.</b> A rise in the value of foreign-owned domestic assets makes the net position <em>worse</em>, because it is on the liability side. Students lose marks here more often than anywhere else in Chapter 2.</div>" },
+  { id:"B3",
+    q:"<p>A creditor country starts the year at <m>+80</m> and runs a current-account surplus of <m>12</m>. Its foreign assets <em>lose</em> 20 in value, and foreign holdings of its domestic assets <em>lose</em> 6.</p><p>Find the closing position. Then say, in one sentence, what is striking about the result.</p>",
+    sol:W([["Loss on assets","−20"],
+           ["Loss on liabilities (a liability that shrinks helps)","+6"],
+           ["Net valuation change","−14"],
+           ["NIIP₁ = 80 + 12 − 14","+78"]]) +
+        "<p>The striking part: the country ran a <em>surplus</em> of 12 and its net position still went <em>down</em>, from 80 to 78. Its behaviour improved the position and the markets took more away than that.</p>" +
+        "<div class='key'>You cannot read a country's external position off its current-account history. The valuation term is not a footnote.</div>" },
+  { id:"B4",
+    q:"<p>A country's position is <m>−40</m> at the start. Over the next five years its current account is <m>−6, −6, −3, −3, −3</m>. Ignore valuation changes.</p><ol><li>Write the position at the end of each year.</li><li>The government halved the deficit in year 3. Did its external debt fall?</li></ol>",
+    sol:W([["End of year 1","−46"],
+           ["End of year 2","−52"],
+           ["End of year 3","−55"],
+           ["End of year 4","−58"],
+           ["End of year 5","−61"]]) +
+        "<p>No. The debt grew in every single year, including the years after the deficit was halved — it simply grew more slowly.</p>" +
+        "<div class='key'>Closing a deficit slows the accumulation of debt. Only a <em>surplus</em> reverses it. A government can truthfully say the deficit halved while the debt it is responsible for rises every year.</div>" },
+  { id:"B5", star:true,
+    q:"<p>A country's net external position is <m>−60%</m> of GDP and nominal GDP grows at <m>4%</m> a year. Valuation changes are zero.</p><p>What current-account balance, as a share of GDP, holds the ratio at <m>−60%</m> for ever?</p>",
+    sol:"<p>Write <m>b</m> for the position as a share of GDP and <m>ca</m> for the current account as a share of GDP. In levels <m>B₁ = B₀ + CA₁</m>. Divide through by this year's GDP, which is <m>(1+g)</m> times last year's:</p>" +
+        W([["b₁ = b₀/(1+g) + ca₁",""],
+           ["Set b₁ = b₀ = b and solve","ca = b · g/(1+g)"],
+           ["ca = −0.60 × 0.04 / 1.04","−2.31% of GDP"]]) +
+        "<p>So this country can run a deficit of about 2.3% of GDP indefinitely without its debt ratio rising at all.</p>" +
+        "<div class='note'><b>Why this matters.</b> Growth was doing the work. If growth fell to 1%, the sustainable deficit would collapse to about 0.6% of GDP — with no change whatever in the country's borrowing or its policy. That is close to a one-line account of what happened to the euro-area periphery after 2008.</div>" +
+        "<p class='q-body'>★ This extends the Chapter 2 relation and is bonus material. The examinable definition of sustainability is the present-value condition in question C7.</p>" },
+  { id:"B6",
+    q:"<p>A country's domestic stock market has an exceptional year and rises sharply. All else equal, what happens to its net international investment position, and why?</p>",
+    sol:"<p>It gets worse.</p><p>Foreign investors own a slice of that market. When the market rises, the value of what foreigners own of the country rises with it — that is an increase in its external liabilities, and so a fall in its <em>net</em> position.</p>" +
+        "<div class='note'>This is not a measurement failure or a paradox. It is simply what a net position means: good news for domestic asset holders is, mechanically, an increase in what the country owes the rest of the world.</div>" }
+]},
+
+{ id:"c", tag:"Section C", title:"The intertemporal model",
+  lede:"Chapter 3. The budget constraint, the optimum, and the closed form. Question C3 and C4 are the shape of question 3 on the paper, which is 24 of the 60 marks.",
+  qs:[
+  { id:"C1",
+    q:"<p>A small open economy has logarithmic preferences and <m>β = 1</m>. It starts with <m>B₀ = 0</m>, faces <m>r* = 10%</m>, and has endowments <m>Q₁ = 100</m>, <m>Q₂ = 110</m>.</p><p>Find <m>Ȳ</m>, <m>C₁</m>, <m>C₂</m>, <m>TB₁</m>, <m>CA₁</m> and <m>B₁</m>. Then say what is special about this country.</p>",
+    sol:W([["Ȳ = 0 + 100 + 110/1.1","200"],
+           ["C₁ = ½ × 200","100"],
+           ["C₂ = 1.1 × 100","110"],
+           ["TB₁ = Q₁ − C₁ = 100 − 100","0"],
+           ["CA₁ = TB₁ + r₀B₀ = 0 + 0","0"],
+           ["B₁ = B₀ + CA₁","0"]]) +
+        "<p>What is special: this country's endowment grows at exactly the world interest rate, so its endowment point already sits at the optimum. It has no reason to borrow or lend, and its trade is balanced in both periods.</p>" +
+        "<div class='key'>Balanced trade is not the normal case or the healthy case. It is the knife-edge case where the timing of income happens to match the timing you wanted to consume.</div>" },
+  { id:"C2",
+    q:"<p>Same preferences, same <m>B₀ = 0</m>, same <m>r* = 10%</m>. But now <m>Q₁ = 120</m> and <m>Q₂ = 88</m>.</p><p>Solve the model. Compare your answer to C1 and explain what changed.</p>",
+    sol:W([["Ȳ = 120 + 88/1.1 = 120 + 80","200"],
+           ["C₁ = ½ × 200","100"],
+           ["C₂ = 1.1 × 100","110"],
+           ["TB₁ = 120 − 100","+20"],
+           ["CA₁ = 20 + 0","+20"],
+           ["B₁ = 0 + 20","+20"]]) +
+        "<p>Check the period-2 constraint: <m>C₂ + B₂ − B₁ = 110 − 20 = 90</m>, and <m>r₁B₁ + Q₂ = 2 + 88 = 90</m>. ✓</p>" +
+        "<p>Lifetime wealth is <em>identical</em> to C1 — both are 200 — so consumption is identical too: 100 and 110. What changed is only the <em>timing</em> of income. This country gets more of it early, so it lends 20 in period 1 and lives on the proceeds in period 2.</p>" +
+        "<div class='key'>Consumption depends on lifetime wealth. The trade balance depends on when the income arrives. That separation is the whole model.</div>" },
+  { id:"C3",
+    q:"<p><m>B₀ = −30</m>, <m>r₀ = r* = 20%</m>, <m>Q₁ = 90</m>, <m>Q₂ = 144</m>.</p><p>Find <m>Ȳ</m>, <m>C₁</m>, <m>C₂</m>, <m>TB₁</m>, <m>CA₁</m> and <m>B₁</m>. Explain carefully why <m>TB₁</m> and <m>CA₁</m> have opposite signs.</p>",
+    sol:W([["Ȳ = (1.2)(−30) + 90 + 144/1.2","−36 + 90 + 120 = 174"],
+           ["C₁ = ½ × 174","87"],
+           ["C₂ = 1.2 × 87","104.4"],
+           ["TB₁ = 90 − 87","+3"],
+           ["CA₁ = 3 + (0.2)(−30) = 3 − 6","−3"],
+           ["B₁ = −30 + (−3)","−33"]]) +
+        "<p>Check: <m>C₂ − B₁ = 104.4 + 33 = 137.4</m>, and <m>r₁B₁ + Q₂ = −6.6 + 144 = 137.4</m>. ✓</p>" +
+        "<p>The country sells 3 more goods than it buys, so its trade balance is positive. But it owes 30 from the past and pays 6 of interest on it this year. The trade surplus of 3 does not cover the interest bill of 6, so the current account is <m>−3</m> and the debt grows from 30 to 33.</p>" +
+        "<div class='note trap'><b>This is the examinable point.</b> A country can run a trade surplus and still be sinking deeper into debt, if the surplus is smaller than the interest on what it already owes.</div>" },
+  { id:"C4",
+    q:"<p>A creditor: <m>B₀ = +60</m>, <m>r₀ = r* = 25%</m>, <m>Q₁ = 50</m>, <m>Q₂ = 100</m>.</p><p>Solve the model fully, and describe in words what this country is doing.</p>",
+    sol:W([["Ȳ = (1.25)(60) + 50 + 100/1.25","75 + 50 + 80 = 205"],
+           ["C₁ = ½ × 205","102.5"],
+           ["C₂ = 1.25 × 102.5","128.125"],
+           ["TB₁ = 50 − 102.5","−52.5"],
+           ["CA₁ = −52.5 + (0.25)(60) = −52.5 + 15","−37.5"],
+           ["B₁ = 60 + (−37.5)","+22.5"]]) +
+        "<p>Check: <m>C₂ − B₁ = 128.125 − 22.5 = 105.625</m>, and <m>r₁B₁ + Q₂ = 5.625 + 100 = 105.625</m>. ✓</p>" +
+        "<p>This country has a small endowment this period and a large stock of foreign assets. It is running down that stock to consume: it imports heavily (a trade deficit of 52.5), and even after collecting 15 of investment income it is still drawing on its wealth, so its position falls from 60 to 22.5.</p>" +
+        "<div class='note'>A current-account deficit here is not borrowing — it is spending savings. The model makes no distinction between the two: both are a fall in <m>B</m>.</div>" },
+  { id:"C5",
+    q:"<p>Explain, in two or three sentences, why the model sets <m>r₁ = r*</m>.</p>",
+    sol:"<p>Households can borrow and lend freely in world financial markets. If the domestic rate were above the world rate, everyone would borrow abroad and lend at home until the gap disappeared; if it were below, the reverse. So arbitrage forces the two together.</p>" +
+        "<p>And because the economy is <em>small</em>, its own borrowing and lending are too little to move the world rate. So <m>r*</m> is not determined inside the model at all — it is an input the country has to take as given.</p>" +
+        "<div class='note'>This is also where the euro area fits the model unusually well. Inside a monetary union, with one policy rate and no currency risk between members, free capital mobility is closer to literally true than it is for most of the world.</div>" },
+  { id:"C6",
+    q:"<p>State the Euler equation and say what it means <strong>in words</strong>, without using the word 'derivative'.</p>",
+    sol:"<p><m>U′(C₁) = (1 + r*) · β · U′(C₂)</m></p>" +
+        "<p>In words: at the best possible consumption plan, giving up a little consumption today must cost you exactly what it buys you tomorrow. If the sacrifice bought more than it cost, you would save more; if it bought less, you would save less. The optimum is the point where there is nothing left to gain by shifting consumption in either direction.</p>" +
+        "<p>Graphically it is the tangency condition: the slope of the indifference curve equals the slope of the budget line, <m>−(1+r*)</m>.</p>" +
+        "<div class='key'>You are never required to derive this. You may well be asked what it means.</div>" },
+  { id:"C7",
+    q:"<p>Starting from the intertemporal budget constraint, show that</p><p style='text-align:center'><m>TB₁ + TB₂/(1+r*) = −(1+r₀)B₀</m></p><p>and say in one sentence what this condition does and does not require.</p>",
+    sol:"<p>Take the constraint and move the consumption terms across:</p>" +
+        W([["C₁ + C₂/(1+r*) = (1+r₀)B₀ + Q₁ + Q₂/(1+r*)",""],
+           ["Collect the Q and C terms","(Q₁−C₁) + (Q₂−C₂)/(1+r*) = −(1+r₀)B₀"],
+           ["And those brackets are trade balances","TB₁ + TB₂/(1+r*) = −(1+r₀)B₀"]]) +
+        "<p>It <strong>requires</strong> that the present value of a country's current and future trade balances covers what it owes today. A net debtor must eventually run trade surpluses large enough, in present value, to pay off its debt.</p>" +
+        "<p>It does <strong>not</strong> require the current account to balance, this year or any year, and it does not forbid long runs of deficits. It rules out exactly one thing: a plan that never repays anything at all.</p>" +
+        "<div class='key'>This is the no-Ponzi condition doing its work — you cannot pay interest by borrowing more, for ever. 'Unsustainable' in this course means that, and not 'large'.</div>" },
+  { id:"C8", star:true,
+    q:"<p>Assume logarithmic preferences, <m>U(C) = ln C</m>, and <m>β = 1</m>. Derive <m>C₁ = ½Ȳ</m> from the Euler equation and the budget constraint.</p>",
+    sol:W([["With U(C) = ln C, U′(C) = 1/C, so the Euler equation is","1/C₁ = (1+r*)/C₂"],
+           ["Rearranged","C₂ = (1+r*)C₁"],
+           ["Substitute into C₁ + C₂/(1+r*) = Ȳ","C₁ + (1+r*)C₁/(1+r*) = Ȳ"],
+           ["The (1+r*) cancels","C₁ + C₁ = Ȳ"],
+           ["So","C₁ = ½Ȳ"]]) +
+        "<p>Then <m>C₂ = (1+r*)·½Ȳ</m>.</p>" +
+        "<div class='note'>The one-half comes from two periods and no discounting, and nothing deeper. With <m>β ≠ 1</m>, or three periods, the fraction would be different. It is not a general law of economics.</div>" }
+]},
+
+{ id:"d", tag:"Section D", title:"The three shocks",
+  lede:"Chapter 3, slides 33–39. The most heavily examined material in the course. The baseline for D1–D3 is question C1: B₀ = 0, r* = 10%, Q₁ = 100, Q₂ = 110, giving Ȳ = 200, C₁ = 100, TB₁ = 0, CA₁ = 0.",
+  qs:[
+  { id:"D1",
+    q:"<p>From the C1 baseline, <m>Q₁</m> rises by 22 and <m>Q₂</m> is unchanged.</p><p>Find the new <m>C₁</m>, <m>TB₁</m> and <m>CA₁</m>, and check the change in the current account against the multiplier.</p>",
+    sol:W([["Ȳ = 122 + 110/1.1 = 122 + 100","222"],
+           ["C₁ = ½ × 222","111"],
+           ["TB₁ = 122 − 111","+11"],
+           ["CA₁ = 11 + 0","+11"],
+           ["ΔCA₁ = 11 − 0","+11"],
+           ["Formula: ½ΔQ₁ = ½ × 22","+11 ✓"]]) +
+        "<p>A <strong>temporary</strong> shock. Output rose 22 and consumption rose only 11 — the household spread the windfall across both periods, and the other half went abroad as a current-account surplus.</p>" +
+        "<div class='key'>Economies <em>finance</em> temporary shocks. The current account absorbs them; consumption barely notices.</div>" },
+  { id:"D2",
+    q:"<p>From the same baseline, <m>Q₁</m> and <m>Q₂</m> both rise by 22.</p><p>Find the new <m>C₁</m>, <m>TB₁</m> and <m>CA₁</m>, and check against the multiplier.</p>",
+    sol:W([["Ȳ = 122 + 132/1.1 = 122 + 120","242"],
+           ["C₁ = ½ × 242","121"],
+           ["TB₁ = 122 − 121","+1"],
+           ["CA₁ = 1 + 0","+1"],
+           ["ΔCA₁ = 1 − 0","+1"],
+           ["Formula: ½ · r*/(1+r*) · ΔQ₁ = ½ × (0.1/1.1) × 22","+1 ✓"]]) +
+        "<p>A <strong>permanent</strong> shock. Output rose 22 in each period and consumption rose 21 of it. The current account moved by a single unit.</p>" +
+        "<div class='key'>Economies <em>adjust</em> to permanent shocks. Consumption absorbs them almost entirely, because there is no good year to smooth against — every future year moved too.</div>" +
+        "<div class='note'>At realistic euro-area interest rates of 2 or 3 per cent, the permanent multiplier is near 0.01, which is to say almost nothing at all.</div>" },
+  { id:"D3",
+    q:"<p>From the same baseline, <m>Q₂</m> rises by 22 and <m>Q₁</m> is unchanged.</p><p>Find the new <m>C₁</m>, <m>TB₁</m> and <m>CA₁</m>. Before you check the formula: is this good news or bad news for the current account?</p>",
+    sol:W([["Ȳ = 100 + 132/1.1 = 100 + 120","220"],
+           ["C₁ = ½ × 220","110"],
+           ["TB₁ = 100 − 110","−10"],
+           ["CA₁ = −10 + 0","−10"],
+           ["ΔCA₁ = −10 − 0","−10"],
+           ["Formula: −ΔQ₂/(2(1+r*)) = −22/2.2","−10 ✓"]]) +
+        "<p>An <strong>anticipated</strong> shock, and the current account gets <em>worse</em>. The country went from balanced trade to a deficit of 10 on nothing but news.</p>" +
+        "<p>Nothing was produced, nothing was consumed abroad, no policy changed. Households simply learned that next year will be better, raised consumption today on the strength of it, and borrowed the difference.</p>" +
+        "<div class='key'>Good news about today improves the current account. Good news about tomorrow makes it worse. This sign is the most common error on the paper.</div>" },
+  { id:"D4",
+    q:"<p>Why does a unit of <m>ΔQ₁</m> move the current account by <m>½</m>, but a unit of <m>ΔQ₂</m> move it by <m>−1/(2(1+r*))</m>? Explain the difference using the definition of lifetime wealth.</p>",
+    sol:"<p>Because of where the income lands in <m>Ȳ = (1+r₀)B₀ + Q₁ + Q₂/(1+r*)</m>.</p>" +
+        "<p>A unit of extra income <em>today</em> adds a full unit to lifetime wealth. A unit of extra income <em>next year</em> adds only <m>1/(1+r*)</m>, because it has to be discounted back. Households spend half of whatever wealth they end up with, so consumption rises by <m>½</m> in the first case and <m>1/(2(1+r*))</m> in the second.</p>" +
+        "<p>The current account then differs because of what happened to output <em>this</em> period. In the first case output rose by 1 and consumption by ½, so the gap improved by ½. In the second case output did not rise at all, so the whole consumption increase had to be borrowed, and the current account fell by the full <m>1/(2(1+r*))</m>.</p>" +
+        "<div class='key'>Every number in the multiplier table is that one paragraph, applied.</div>" },
+  { id:"D5",
+    q:"<p>For each scenario, name the shock, give the direction of the current account, and justify in one sentence.</p><ol><li>A severe frost destroys much of this year's fruit crop; next year's is expected to be normal.</li><li>A country is told its EU structural funds will double, starting next year and continuing indefinitely.</li><li>A long-standing heavy industry closes permanently and will not be replaced.</li><li>A global energy price spike that the central bank and the Commission both forecast will unwind within two years.</li></ol>",
+    sol:"<ol>" +
+        "<li><strong>Temporary, negative → the current account worsens.</strong> <m>Q₁</m> falls and <m>Q₂</m> does not, so the country borrows to keep consumption up and the deficit absorbs the shock.</li>" +
+        "<li><strong>Anticipated, positive → the current account worsens.</strong> <m>Q₂</m> rises while <m>Q₁</m> is unchanged, so consumption rises now against income that has not yet arrived, financed by borrowing.</li>" +
+        "<li><strong>Permanent, negative → the current account barely moves.</strong> Both <m>Q₁</m> and <m>Q₂</m> fall, so consumption falls by nearly the whole amount and there is nothing to smooth against.</li>" +
+        "<li><strong>Temporary, negative → the current account worsens.</strong> Exactly the same object as (1), despite arriving through a completely different channel.</li>" +
+        "</ol>" +
+        "<div class='note'>Note that (1) and (4) get the same answer. The only thing the model asks about a shock is <em>which periods it hits</em> — not what caused it. That is a feature, not a gap.</div>" +
+        "<div class='key'>A bare label earns about half the marks. The one-sentence justification is where the rest are.</div>" },
+  { id:"D6",
+    q:"<p>Spain ran a current-account deficit that widened year after year between 1999 and 2007, reaching roughly a tenth of GDP. Which shock does the model say this looks like, and what does the model get right and wrong?</p>",
+    sol:"<p>It looks like an <strong>anticipated</strong> shock. Joining the euro brought interest rates sharply down and a long period of catch-up growth was widely expected — in the model, a rise in <m>Q₂</m> (and a fall in <m>r*</m>), both of which push consumption up today and the current account down.</p>" +
+        "<p><strong>What the model gets right:</strong> the direction, and the persistence. A deficit driven by optimism about the future does not correct itself while the optimism lasts.</p>" +
+        "<p><strong>What it leaves out:</strong> any mechanism by which the optimism could be wrong, and any role for the composition of the borrowing — whether it financed tradable capacity or housing. Chapter 3 has one good, so it cannot speak to that.</p>" +
+        "<div class='note'>The examinable lesson: a current-account deficit can be caused by nothing but optimism. Reading one as automatic evidence of weakness is a mistake the model specifically warns against.</div>" },
+  { id:"D7",
+    q:"<p>Greece's current account swung from a deficit of over 10% of GDP to a surplus between 2008 and 2015 — a reversal of roughly 14 points. The model, treating this as a downward revision to expected future income, predicts a smaller move than that.</p><p>Does this mean the model failed? Answer carefully.</p>",
+    sol:"<p>Not exactly, and saying why is worth more marks than saying yes or no.</p>" +
+        "<p>The model gets the <strong>direction</strong> right: income expectations were revised sharply down, so households had to adjust rather than finance, and the current account improved. It under-predicts the <strong>size</strong>.</p>" +
+        "<p>The reason is that the episode violated one of the model's own assumptions. Chapter 3 assumes free capital mobility — the country can borrow at <m>r*</m> whatever happens. From 2010 Greece could not borrow at any rate. That is a <em>sudden stop</em>, and in a sudden stop the current account does not adjust to what households would choose; it adjusts to what financing is available, which forces a much larger and faster swing.</p>" +
+        "<div class='key'>A model that fails because one of its stated assumptions stopped holding has not been refuted. It has told you exactly where to look.</div>" }
+]}
+];
+
+/* ---------------- mock paper ---------------- */
+var MOCK = [
+  { id:"Q1", marks:"12 marks",
+    q:"<p><strong>Accounting.</strong> A country reports, in billions of euro: output 240, consumption 150, investment 55, government spending 48. It also pays 7 of net investment income to foreigners.</p><ol><li>Find absorption and net exports.</li><li>Find the current account.</li><li>Find national saving, and verify that <m>CA = S − I</m>.</li><li>In one sentence, say why the trade balance and the current account differ here.</li></ol>",
+    sol:W([["(a)  A = 150 + 55 + 48","253"],
+           ["      NX = 240 − 253","−13"],
+           ["(b)  CA = −13 − 7","−20"],
+           ["(c)  GNI = 240 − 7","233"],
+           ["      S = 233 − 150 − 48","35"],
+           ["      S − I = 35 − 55","−20 ✓"]]) +
+        "<p>(d) Because the country pays income abroad on debt it built up in the past. The trade balance counts only goods and services; the current account also counts what the country earns and pays on its external position.</p>" +
+        "<div class='note'><b>Mark scheme.</b> 3 for absorption and net exports, 2 for the current account, 4 for saving and the verification, 3 for the explanation. Arithmetic slips are penalised once, not again downstream.</div>" },
+  { id:"Q2", marks:"12 marks",
+    q:"<p><strong>Stocks, flows and valuation.</strong> The same country begins the year with a net international investment position of <m>−320</m>. Over the year its foreign assets gain 18 in value, and foreign holdings of its domestic assets gain 31.</p><ol><li>Find the net valuation change and the closing position.</li><li>How much of the change in the position did the country choose?</li><li>Next year it halves the current-account deficit. Does its net external debt fall? Explain.</li></ol>",
+    sol:W([["(a)  Valuation = +18 − 31","−13"],
+           ["      NIIP₁ = −320 − 20 − 13","−353"],
+           ["(b)  Total change","−33"],
+           ["      Of which the current account","−20"],
+           ["      Of which valuation (not chosen)","−13"]]) +
+        "<p>(c) No. Halving the deficit to 10 still adds 10 to the debt. The position would go to roughly <m>−363</m> before any valuation effect. A smaller deficit slows the accumulation of debt; only a surplus reverses it.</p>" +
+        "<div class='note'><b>Mark scheme.</b> 4 for the valuation and closing position (2 of them for the liability sign), 3 for the decomposition, 5 for part (c) — of which 3 are for the explanation, not the number.</div>" },
+  { id:"Q3", marks:"24 marks",
+    q:"<p><strong>The endowment economy.</strong> A small open economy has logarithmic preferences and <m>β = 1</m>. It holds <m>B₀ = +40</m> of foreign bonds, <m>r₀ = r* = 25%</m>, and endowments <m>Q₁ = 80</m>, <m>Q₂ = 150</m>.</p><ol><li>Find <m>Ȳ</m>, <m>C₁</m>, <m>C₂</m>, <m>TB₁</m>, <m>CA₁</m> and <m>B₁</m>.</li><li>Draw the budget line, the endowment point and the optimum, and mark the trade balance on your diagram.</li><li>Now <m>Q₁</m> rises by 20, with <m>Q₂</m> unchanged. Find the new <m>CA₁</m> and check it against the multiplier.</li><li>Instead, <m>Q₂</m> rises by 25, with <m>Q₁</m> unchanged. Find the new <m>CA₁</m>.</li><li>Compare your answers to (c) and (d). Something surprising has happened to consumption. Say what, and explain it.</li></ol>",
+    sol:"<p><strong>(a)</strong></p>" +
+        W([["Ȳ = (1.25)(40) + 80 + 150/1.25","50 + 80 + 120 = 250"],
+           ["C₁ = ½ × 250","125"],
+           ["C₂ = 1.25 × 125","156.25"],
+           ["TB₁ = 80 − 125","−45"],
+           ["CA₁ = −45 + (0.25)(40)","−35"],
+           ["B₁ = 40 − 35","+5"]]) +
+        "<p>Check: <m>C₂ − B₁ = 156.25 − 5 = 151.25</m>, and <m>r₁B₁ + Q₂ = 1.25 + 150 = 151.25</m>. ✓</p>" +
+        "<p><strong>(b)</strong> Budget line with slope <m>−1.25</m> through the endowment point <m>(80, 150)</m>; the optimum at <m>(125, 156.25)</m> lies to the <em>right</em> of the endowment, so the horizontal gap of 45 is a trade deficit.</p>" +
+        "<p><strong>(c)</strong> Temporary:</p>" +
+        W([["Ȳ = 50 + 100 + 120","270"],
+           ["C₁ = ½ × 270","135"],
+           ["TB₁ = 100 − 135","−35"],
+           ["CA₁ = −35 + 10","−25"],
+           ["ΔCA₁ = −25 − (−35)","+10"],
+           ["Formula: ½ × 20","+10 ✓"]]) +
+        "<p><strong>(d)</strong> Anticipated:</p>" +
+        W([["Ȳ = 50 + 80 + 175/1.25 = 50 + 80 + 140","270"],
+           ["C₁ = ½ × 270","135"],
+           ["TB₁ = 80 − 135","−55"],
+           ["CA₁ = −55 + 10","−45"],
+           ["ΔCA₁ = −45 − (−35)","−10"],
+           ["Formula: −25/(2 × 1.25)","−10 ✓"]]) +
+        "<p><strong>(e)</strong> Consumption is <em>identical</em> in (c) and (d): 135 in both. Lifetime wealth rose to 270 in both cases, because 20 received today and 25 received next year are worth the same once discounted — <m>25/1.25 = 20</m>.</p>" +
+        "<p>But the current account differs by 20, because in (c) the extra output actually arrived this period and could pay for the extra consumption, whereas in (d) it did not, so the whole increase had to be borrowed.</p>" +
+        "<div class='key'>Same wealth, same consumption, opposite movement in the external accounts. The timing of income — not its present value — is what the current account responds to.</div>" +
+        "<div class='note'><b>Mark scheme.</b> 8 for (a), of which 2 for CA₁ being distinct from TB₁; 4 for the diagram, awarded for the labelled axes, the slope, both points and the marked gap; 4 for (c); 4 for (d); 4 for (e), of which 3 are for the explanation.</div>" },
+  { id:"Q4", marks:"12 marks",
+    q:"<p><strong>Name the shock.</strong> For each, name the shock, give the direction of the current account, and justify in one sentence.</p><ol><li>A drought cuts this year's output; rainfall is expected to be normal next year.</li><li>A country is told its EU structural funds will double from next year onwards.</li><li>A long-running industry closes permanently and will not be replaced.</li></ol>",
+    sol:"<ol>" +
+        "<li><strong>Temporary, negative → the current account worsens.</strong> <m>Q₁</m> falls, <m>Q₂</m> does not; the country borrows to smooth and the deficit absorbs the shock.</li>" +
+        "<li><strong>Anticipated, positive → the current account worsens.</strong> <m>Q₂</m> rises with <m>Q₁</m> unchanged; consumption rises now against income that has not arrived, financed by borrowing.</li>" +
+        "<li><strong>Permanent, negative → the current account barely moves.</strong> Both periods fall, so consumption bears almost the whole adjustment.</li>" +
+        "</ol>" +
+        "<div class='note'><b>Mark scheme.</b> 4 marks each: 1 for the label, 1 for the direction, 2 for the justification. The justification must refer to which periods the shock hits.</div>" },
+  { id:"★", marks:"up to 6 bonus marks", star:true,
+    q:"<p><strong>Starred bonus — never required.</strong> Starting from <m>C₁ = ½Ȳ</m>, derive the permanent-shock multiplier</p><p style='text-align:center'><m>ΔCA₁ = ½ · r*/(1+r*) · ΔQ₁</m></p><p>and say what it tends to as <m>r* → 0</m>.</p>",
+    sol:W([["A permanent shock sets ΔQ₁ = ΔQ₂ = Δ, so","ΔȲ = Δ + Δ/(1+r*)"],
+           ["Factorise","ΔȲ = Δ (2+r*)/(1+r*)"],
+           ["Consumption is half of wealth","ΔC₁ = ½Δ (2+r*)/(1+r*)"],
+           ["The trade balance is ΔQ₁ − ΔC₁","ΔTB₁ = Δ − ½Δ (2+r*)/(1+r*)"],
+           ["Over a common denominator","ΔTB₁ = Δ [2(1+r*) − (2+r*)] / (2(1+r*))"],
+           ["The bracket simplifies to r*","ΔTB₁ = ½ · r*/(1+r*) · Δ"],
+           ["With B₀ fixed, ΔCA₁ = ΔTB₁","ΔCA₁ = ½ · r*/(1+r*) · Δ ✓"]]) +
+        "<p>As <m>r* → 0</m> the multiplier tends to <strong>zero</strong>: a permanent shock has no effect on the current account at all, because present and future income become perfect substitutes and there is nothing whatever to be gained by shifting consumption between the periods.</p>" +
+        "<div class='note'>Bonus marks are only worth collecting once the 60 are secure. Six bonus marks are worth less than one lost mark elsewhere.</div>" }
+];
+
+/* ---------------- render ---------------- */
+function qCard(item, cls) {
+  var star = item.star ? '<span class="star">★ bonus</span>' : '';
+  var marks = item.marks ? '<span class="marks">' + item.marks + '</span>' : '';
+  return '<article class="q" data-id="' + item.id + '">' +
+    '<div class="q-top"><div class="q-id">' + item.id + star + '</div>' +
+    '<div class="q-body">' + marks + item.q + '</div></div>' +
+    '<div class="q-acts">' +
+      '<button type="button" class="reveal" aria-expanded="false">Show solution</button>' +
+      '<button type="button" class="mark" aria-pressed="false">Mark done</button>' +
+    '</div>' +
+    '<div class="sol"><h4>Solution</h4>' + item.sol + '</div>' +
+  '</article>';
+}
+
+var html = '';
+SECTIONS.forEach(function (s) {
+  html += '<section id="' + s.id + '">' +
+    '<div class="sec-head"><span class="sec-tag">' + s.tag + '</span><h2>' + s.title + '</h2></div>' +
+    '<p class="lede">' + s.lede + '</p>' +
+    s.qs.map(function (q) { return qCard(q); }).join('') +
+  '</section>';
+});
+
+html += '<section id="e">' +
+  '<div class="sec-head"><span class="sec-tag">Section E</span><h2>The mock paper</h2></div>' +
+  '<p class="lede">Sixty marks, sixty minutes, four questions and a starred bonus. Sit it once, properly: no notes, one hour, the clock running. Then mark it. A mock taken at leisure tells you nothing about an exam taken under pressure.</p>' +
+  '<div class="mock-bar">' +
+    '<span class="clock" id="clock">60:00</span>' +
+    '<button type="button" id="startBtn">Start</button>' +
+    '<button type="button" id="resetBtn">Reset</button>' +
+    '<span class="mock-hint">Write out the four equations in the first three minutes. Then Q1 to minute 15, Q2 to 27, Q3 to 51, Q4 to 60.</span>' +
+  '</div>' +
+  MOCK.map(function (q) { return qCard(q); }).join('') +
+'</section>';
+
+document.getElementById('main').innerHTML = html;
+
+/* ---------------- behaviour ---------------- */
+var STORE = 'ie-practice-done-v1';
+var done = {};
+try { done = JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { done = {}; }
+
+var cards = Array.prototype.slice.call(document.querySelectorAll('.q'));
+var total = cards.length;
+
+function save() {
+  try { localStorage.setItem(STORE, JSON.stringify(done)); } catch (e) { /* private mode */ }
+}
+function refresh() {
+  var n = cards.filter(function (c) { return done[c.dataset.id]; }).length;
+  document.getElementById('pcount').textContent = n + '/' + total;
+  document.getElementById('pbar').style.width = (total ? (n / total) * 100 : 0) + '%';
+}
+
+cards.forEach(function (card) {
+  var id = card.dataset.id;
+  var sol = card.querySelector('.sol');
+  var rev = card.querySelector('.reveal');
+  var mk = card.querySelector('.mark');
+
+  rev.addEventListener('click', function () {
+    var open = sol.classList.toggle('open');
+    rev.setAttribute('aria-expanded', String(open));
+    rev.textContent = open ? 'Hide solution' : 'Show solution';
+  });
+
+  if (done[id]) { card.classList.add('done'); mk.setAttribute('aria-pressed', 'true'); mk.textContent = 'Done'; }
+  mk.addEventListener('click', function () {
+    if (done[id]) { delete done[id]; } else { done[id] = 1; }
+    card.classList.toggle('done', !!done[id]);
+    mk.setAttribute('aria-pressed', String(!!done[id]));
+    mk.textContent = done[id] ? 'Done' : 'Mark done';
+    save(); refresh();
+  });
+});
+refresh();
+
+/* ---- mock timer ---- */
+(function () {
+  var LEN = 60 * 60, left = LEN, tick = null;
+  var el = document.getElementById('clock');
+  var start = document.getElementById('startBtn');
+  var reset = document.getElementById('resetBtn');
+  function paint() {
+    var m = Math.floor(left / 60), s = left % 60;
+    el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    el.classList.toggle('low', left <= 300);
+  }
+  function stop() { clearInterval(tick); tick = null; start.textContent = 'Start'; }
+  start.addEventListener('click', function () {
+    if (tick) { stop(); start.textContent = 'Resume'; return; }
+    start.textContent = 'Pause';
+    tick = setInterval(function () {
+      left--; paint();
+      if (left <= 0) { stop(); el.textContent = 'Time'; }
+    }, 1000);
+  });
+  reset.addEventListener('click', function () { stop(); left = LEN; paint(); });
+  paint();
+})();
+
+/* ---- theme ---- */
+(function () {
+  var btn = document.getElementById('theme'), KEY = 'ie-practice-theme';
+  function dark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    if (t) return t === 'dark';
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function label() { btn.textContent = dark() ? 'Light' : 'Dark'; }
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  } catch (e) { /* ignore */ }
+  label();
+  btn.addEventListener('click', function () {
+    var next = dark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
+    label();
+  });
+})();
+</script>
+</body>
+</html>
